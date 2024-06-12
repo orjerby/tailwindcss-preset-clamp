@@ -36,7 +36,7 @@ module.exports = {
                 const maxSizeNum = parseInt(clampFontSizeList[maxSize]);
                 if (minSizeNum < maxSizeNum) {
                   clampObjects[
-                    `${minSize}-${maxSize},${minWidth}-${maxWidth}`
+                    `${minSize}-${maxSize},${minScreen}-${maxScreen}`
                   ] = clamp(
                     minWidth,
                     maxWidth,
@@ -68,7 +68,7 @@ module.exports = {
                 const maxSizeNum = parseInt(clampSpacingList[maxSize]);
                 if (minSizeNum < maxSizeNum) {
                   clampObjects[
-                    `${minSize}-${maxSize},${minWidth}-${maxWidth}`
+                    `${minSize}-${maxSize},${minScreen}-${maxScreen}`
                   ] = clamp(
                     minWidth,
                     maxWidth,
