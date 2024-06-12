@@ -1,0 +1,22 @@
+{
+  "name": "tailwindcss-preset-clamp",
+  "version": "1.0.0",
+  "description": "A Tailwind CSS preset for generating clamp-based font sizes and spacing",
+  "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "release": "changeset publish"
+  },
+  "keywords": [
+    "tailwindcss",
+    "preset",
+    "clamp"
+  ],
+  "author": "Or Jerby",
+  "license": "MIT",
+  "devDependencies": {
+    "@changesets/cli": "^2.27.5"
+  }
+}
