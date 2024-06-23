@@ -20,6 +20,7 @@ module.exports = {
     clampScreensList: {},
     clampFontSizeList: {},
     clampSpacingList: {},
+    clampBorderRadiusList: {},
     clampFontSize: ({ theme }) => {
       const screens = theme("clampScreensList");
       const clampFontSizeList = theme("clampFontSizeList");
@@ -84,9 +85,44 @@ module.exports = {
       });
       return clampObjects;
     },
+    clampBorderRadius: ({ theme }) => {
+      const screens = theme("clampScreensList");
+      const clampBorderRadiusList = theme("clampBorderRadiusList");
+      const remDivider = theme("remDivider");
+      const clampObjects = {};
+      Object.keys(screens).forEach((minScreen) => {
+        const minWidth = parseInt(screens[minScreen]);
+        Object.keys(screens).forEach((maxScreen) => {
+          const maxWidth = parseInt(screens[maxScreen]);
+          if (minWidth < maxWidth) {
+            Object.keys(clampBorderRadiusList).forEach((minSize) => {
+              const minSizeNum = parseInt(clampBorderRadiusList[minSize]);
+              Object.keys(clampBorderRadiusList).forEach((maxSize) => {
+                const maxSizeNum = parseInt(clampBorderRadiusList[maxSize]);
+                if (minSizeNum < maxSizeNum) {
+                  clampObjects[
+                    `${minSize}-${maxSize},${minScreen}-${maxScreen}`
+                  ] = clamp(
+                    minWidth,
+                    maxWidth,
+                    minSizeNum,
+                    maxSizeNum,
+                    remDivider
+                  );
+                }
+              });
+            });
+          }
+        });
+      });
+      return clampObjects;
+    },
     extend: {
       spacing: ({ theme }) => ({
         ...theme("clampSpacing"),
+      }),
+      borderRadius: ({ theme }) => ({
+        ...theme("clampBorderRadius"),
       }),
       fontSize: ({ theme }) => ({
         ...theme("clampFontSize"),

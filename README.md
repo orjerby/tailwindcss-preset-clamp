@@ -15,9 +15,10 @@ npm i tailwindcss-preset-clamp
 
 ## Usage
 
-Provide `clampScreensList` to set the screen widths supported by the clamp.
-Provide `clampFontSizeList` to set the font sizes supported by the clamp.
-Provide `clampSpacingList` to set the spacing supported by the clamp.
+Provide `clampScreensList` to set the screen widths supported by the clamp.\
+Provide `clampFontSizeList` to set the font sizes supported by the clamp.\
+Provide `clampSpacingList` to set the spacing supported by the clamp.\
+Provide `clampBorderRadiusList` to set the borderRadius supported by the clamp.
 
 Those are key value objects:
 
@@ -48,12 +49,16 @@ module.exports = {
       10: 10,
       15: 15,
     },
+    clampBorderRadiusList: {
+      5: 5,
+      10: 10,
+    },
   },
 };
 ```
 
 ```html
-<div class="p-5-15,640-1024">
+<div class="p-5-15,640-1024 rounded-5-15,640-1024">
   <h1 class="text-16-20,640-1024">...</h1>
   <p class="text-12-16,640-1024">...</p>
 </div>
@@ -80,12 +85,16 @@ module.exports = {
       md: 10,
       lg: 15,
     },
+    clampBorderRadiusList: {
+      sm: 5,
+      md: 10,
+    },
   },
 };
 ```
 
 ```html
-<div class="p-sm-lg,sm-lg">
+<div class="p-sm-lg,sm-lg rounded-sm-md,sm-lg">
   <h1 class="text-md-lg,sm-lg">...</h1>
   <p class="text-sm-lg,sm-lg">...</p>
 </div>
