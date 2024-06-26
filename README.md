@@ -5,7 +5,7 @@
 
 ## About
 
-A Tailwind CSS preset for generating clamp-based font sizes and spacing.
+A Tailwind CSS preset for generating clamp functions.
 
 ## Installation
 
@@ -15,88 +15,38 @@ npm i tailwindcss-preset-clamp
 
 ## Usage
 
-Provide `clampScreensList` to set the screen widths supported by the clamp.\
 Provide `clampFontSizeList` to set the font sizes supported by the clamp.\
 Provide `clampSpacingList` to set the spacing supported by the clamp.\
-Provide `clampBorderRadiusList` to set the borderRadius supported by the clamp.
-
-Those are key value objects:
-
-- The key will determine how it will be used in the html template.
-- The value is the px size.
-
-As an example, the classes applied below become available right away.
-Those classes will calculate and use the clamp and rem for you.
+Provide `clampBorderRadiusList` to set the borderRadius supported by the clamp.\
+Provide `clampGridTemplateColumnsList` to set the grid template columns supported by the clamp.\
+Provide `clampGridTemplateRowsList` to set the grid template rows supported by the clamp.
 
 ### Option 1
 
-```js
-// tailwind.config.js
-module.exports = {
-  presets: [require("tailwindcss-preset-clamp")],
-  theme: {
-    clampScreensList: {
-      640: 640,
-      1024: 1024,
-    },
-    clampFontSizeList: {
-      12: 12,
-      16: 16,
-      20: 20,
-    },
-    clampSpacingList: {
-      5: 5,
-      10: 10,
-      15: 15,
-    },
-    clampBorderRadiusList: {
-      5: 5,
-      10: 10,
-    },
-  },
-};
-```
-
-```html
-<div class="p-5-15,640-1024 rounded-5-15,640-1024">
-  <h1 class="text-16-20,640-1024">...</h1>
-  <p class="text-12-16,640-1024">...</p>
-</div>
-```
-
-### Option 2
+Those classes will calculate and use the clamp and rem for you.
 
 ```js
 // tailwind.config.js
 module.exports = {
   presets: [require("tailwindcss-preset-clamp")],
   theme: {
-    clampScreensList: {
-      sm: 640,
-      lg: 1024,
-    },
-    clampFontSizeList: {
-      sm: 12,
-      md: 16,
-      lg: 20,
-    },
-    clampSpacingList: {
-      sm: 5,
-      md: 10,
-      lg: 15,
-    },
-    clampBorderRadiusList: {
-      sm: 5,
-      md: 10,
-    },
+    clampFontSizeList: ["16-32,640-1024", "14-22,640-1024"],
+    clampSpacingList: ["5-10,640-1024", "10-15,640-1024"],
+    clampBorderRadiusList: ["10-20,640-1024"],
+    clampGridTemplateColumnsList: [
+      "5-10,640-1024_10-15,640-1024_10-20,640-1024_20-40,640-1024",
+    ],
+    clampGridTemplateRowsList: ["10-20,640-1024_10-15,640-1024"],
   },
 };
 ```
 
 ```html
-<div class="p-sm-lg,sm-lg rounded-sm-md,sm-lg">
-  <h1 class="text-md-lg,sm-lg">...</h1>
-  <p class="text-sm-lg,sm-lg">...</p>
+<div
+  class="tw-grid grid-cols-5-10,640-1024_10-15,640-1024_10-20,640-1024_20-40,640-1024 grid-rows-10-20,640-1024_10-15,640-1024 rounded-10-20,640-1024"
+>
+  <h1 class="text-16-32,640-1024 mt-10-15,640-1024">...</h1>
+  <p class="text-14-22,640-1024 mt-5-10,640-1024">...</p>
 </div>
 ```
 

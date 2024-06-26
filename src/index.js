@@ -13,120 +13,63 @@ function clamp(
   const b = `${(sizeMaxParam - viewportMaxParam * change) / remDivider}rem`;
   return `clamp(${sizeMin}, ${a} + ${b}, ${sizeMax})`;
 }
+
+function generateClasses(classDefinitions, remDivider) {
+  const sizes = {};
+
+  classDefinitions.forEach((cds) => {
+    cds.split("_").forEach((cd) => {
+      const [sizePart, viewportPart] = cd.split(",");
+      const [minSize, maxSize] = sizePart.split("-").map(Number);
+      const [minWidth, maxWidth] = viewportPart.split("-").map(Number);
+
+      if (sizes[cds]) {
+        sizes[cds] +=
+          " " + clamp(minWidth, maxWidth, minSize, maxSize, remDivider);
+      } else {
+        sizes[cds] = clamp(minWidth, maxWidth, minSize, maxSize, remDivider);
+      }
+    });
+  });
+
+  return sizes;
+}
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   theme: {
     remDivider: 16,
-    clampScreensList: {},
-    clampFontSizeList: {},
-    clampSpacingList: {},
-    clampBorderRadiusList: {},
-    clampFontSize: ({ theme }) => {
-      const screens = theme("clampScreensList");
-      const clampFontSizeList = theme("clampFontSizeList");
-      const remDivider = theme("remDivider");
-      const clampObjects = {};
-      Object.keys(screens).forEach((minScreen) => {
-        const minWidth = parseInt(screens[minScreen]);
-        Object.keys(screens).forEach((maxScreen) => {
-          const maxWidth = parseInt(screens[maxScreen]);
-          if (minWidth < maxWidth) {
-            Object.keys(clampFontSizeList).forEach((minSize) => {
-              const minSizeNum = parseInt(clampFontSizeList[minSize]);
-              Object.keys(clampFontSizeList).forEach((maxSize) => {
-                const maxSizeNum = parseInt(clampFontSizeList[maxSize]);
-                if (minSizeNum < maxSizeNum) {
-                  clampObjects[
-                    `${minSize}-${maxSize},${minScreen}-${maxScreen}`
-                  ] = clamp(
-                    minWidth,
-                    maxWidth,
-                    minSizeNum,
-                    maxSizeNum,
-                    remDivider
-                  );
-                }
-              });
-            });
-          }
-        });
-      });
-      return clampObjects;
-    },
-    clampSpacing: ({ theme }) => {
-      const screens = theme("clampScreensList");
-      const clampSpacingList = theme("clampSpacingList");
-      const remDivider = theme("remDivider");
-      const clampObjects = {};
-      Object.keys(screens).forEach((minScreen) => {
-        const minWidth = parseInt(screens[minScreen]);
-        Object.keys(screens).forEach((maxScreen) => {
-          const maxWidth = parseInt(screens[maxScreen]);
-          if (minWidth < maxWidth) {
-            Object.keys(clampSpacingList).forEach((minSize) => {
-              const minSizeNum = parseInt(clampSpacingList[minSize]);
-              Object.keys(clampSpacingList).forEach((maxSize) => {
-                const maxSizeNum = parseInt(clampSpacingList[maxSize]);
-                if (minSizeNum < maxSizeNum) {
-                  clampObjects[
-                    `${minSize}-${maxSize},${minScreen}-${maxScreen}`
-                  ] = clamp(
-                    minWidth,
-                    maxWidth,
-                    minSizeNum,
-                    maxSizeNum,
-                    remDivider
-                  );
-                }
-              });
-            });
-          }
-        });
-      });
-      return clampObjects;
-    },
-    clampBorderRadius: ({ theme }) => {
-      const screens = theme("clampScreensList");
-      const clampBorderRadiusList = theme("clampBorderRadiusList");
-      const remDivider = theme("remDivider");
-      const clampObjects = {};
-      Object.keys(screens).forEach((minScreen) => {
-        const minWidth = parseInt(screens[minScreen]);
-        Object.keys(screens).forEach((maxScreen) => {
-          const maxWidth = parseInt(screens[maxScreen]);
-          if (minWidth < maxWidth) {
-            Object.keys(clampBorderRadiusList).forEach((minSize) => {
-              const minSizeNum = parseInt(clampBorderRadiusList[minSize]);
-              Object.keys(clampBorderRadiusList).forEach((maxSize) => {
-                const maxSizeNum = parseInt(clampBorderRadiusList[maxSize]);
-                if (minSizeNum < maxSizeNum) {
-                  clampObjects[
-                    `${minSize}-${maxSize},${minScreen}-${maxScreen}`
-                  ] = clamp(
-                    minWidth,
-                    maxWidth,
-                    minSizeNum,
-                    maxSizeNum,
-                    remDivider
-                  );
-                }
-              });
-            });
-          }
-        });
-      });
-      return clampObjects;
-    },
+    clampFontSizeList: [],
+    clampSpacingList: [],
+    clampBorderRadiusList: [],
+    clampGridTemplateColumnsList: [],
+    clampGridTemplateRowsList: [],
     extend: {
-      spacing: ({ theme }) => ({
-        ...theme("clampSpacing"),
-      }),
-      borderRadius: ({ theme }) => ({
-        ...theme("clampBorderRadius"),
-      }),
-      fontSize: ({ theme }) => ({
-        ...theme("clampFontSize"),
-      }),
+      fontSize: (theme) => {
+        const remDivider = theme("remDivider");
+        const classDefinitions = theme("clampFontSizeList");
+        return generateClasses(classDefinitions, remDivider);
+      },
+      spacing: ({ theme }) => {
+        const remDivider = theme("remDivider");
+        const classDefinitions = theme("clampSpacingList");
+        return generateClasses(classDefinitions, remDivider);
+      },
+      borderRadius: ({ theme }) => {
+        const remDivider = theme("remDivider");
+        const classDefinitions = theme("clampBorderRadiusList");
+        return generateClasses(classDefinitions, remDivider);
+      },
+      gridTemplateColumns: ({ theme }) => {
+        const remDivider = theme("remDivider");
+        const classDefinitions = theme("clampGridTemplateColumnsList");
+        return generateClasses(classDefinitions, remDivider);
+      },
+      gridTemplateRows: ({ theme }) => {
+        const remDivider = theme("remDivider");
+        const classDefinitions = theme("clampGridTemplateRowsList");
+        return generateClasses(classDefinitions, remDivider);
+      },
     },
   },
 };
